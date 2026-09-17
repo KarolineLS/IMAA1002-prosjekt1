@@ -1,0 +1,247 @@
+%=====================================================================
+%  LaTeX‑dokument – norsk tekst om Hill‑kryptering (klar for Overleaf)
+%=====================================================================
+\documentclass[12pt,a4paper]{article}
+
+%-------------------------- Pakker ------------------------------------
+\usepackage[utf8]{inputenc}          % tegnkoding
+\usepackage[T1]{fontenc}             % korrekt tegnbehandling
+\usepackage[norsk]{babel}            % språk
+\usepackage{amsmath,amssymb,amsthm}  % matematiske omgivelser
+\usepackage{graphicx}                % figurer (ikke brukt her)
+\usepackage{float}                   % presis plassering av figurer/tabeller
+\usepackage{booktabs}                % pene tabeller
+\usepackage{hyperref}                % lenker
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+%-------------------------- Dokumentinformasjon -----------------------
+\title{Prosjekt 1: Hill-siffer}
+\author{ Maria Brizida Inacio Dos Santos Carvalho, Stian Frøland \\ Kristina Løvbrekke, Linnea Nordstrand, Karoline Låge Sivertsen }
+\date{September 2026}
+\setlength{\parindent}{0pt}
+
+
+%=====================================================================
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{Innledning}
+Kryptering er en metode for å omgjøre data, i disse eksemplene ren tekst,
+til chiffertekst ved bruk av en krypteringsnøkkel. Dekryptering gjør
+chiffertekst om til den originale rene teksten. Formålet med kryptering og
+dekryptering er å dele opp data på en sikker måte, ved at den kun er lesbar
+for de med krypteringsnøkkel, og fremstår uforståelig for alle andre.
+Dette er kritisk for å kunne sende over viktig informasjon, uten å få den
+på avveie.
+
+%=====================================================================
+\section{Alfabet og tall}
+Man kan omgjøre det norske alfabetet til sifre $0$–$28$ der
+$
+A=0,\; B=1,\; C=2,\;\dots ,\; Å=28 .
+$
+Vi tar for oss vektoren
+$
+\mathbf{H} = (H,\;E,\;I,\;V,\;E,\;R,\;D,\;E,\;N).
+$
+
+Siden hver av bokstavene har et tilsvarende siffer kan vi omgjøre vektoren
+med bokstaver til en vektor med tall:
+$
+H=7,\;E=4,\;I=8,\;V=21,\;R=17,\;D=3,\;N=13 .
+$
+
+Dermed blir tallvektoren
+$
+\mathbf{v} = (7,\,4,\,8,\,21,\,4,\,17,\,3,\,4,\,13).
+$
+
+\noindent Oversikten $A=0$, $B=1$, osv. fungerer som krypteringsnøkkelen i dette
+tilfellet.
+
+%=====================================================================
+\section{Modulo‑operasjon}
+\texttt{Modulo}(x) betyr at resultatet ligger i mengden $\{0,1,\dots ,x-1\}$;
+svaret kan altså ikke være $x$ eller høyere. I eksempelet der modulo er $29$,
+må resultatet være under $29$.
+
+Vi kommer fram til at svaret er $85$, men siden $85\ \text{mod }29$ ikke er
+mulig direkte, ser vi på hvor mye $85$ overskrider $29$:
+$
+85 = 2\cdot 29 + 27 \quad\Longrightarrow\quad 85\ (\text{mod }29)=27 .
+$
+
+%=====================================================================
+\section{Hill‑kryptering}
+\subsection{Generell fremgangsmåte}
+Måten å kryptere en streng på via Hill‑siffer er å først velge en nøkkel
+$N$. Nøkkelen er en matrise, for eksempel en $(3\times3)$‑matrise.
+Deretter trenger du meldingen $M$, som du vil kryptere. Meldingen blir delt opp
+i blokker som passer nøkkelmatrisen slik at den kan ganges med den.
+
+Bokstavene i matrisen gjøres om til tall ($A=0$, $B=1$, osv.). Deretter
+ganges nøkkelmatrisen $N$ med meldingsmatrisen $M$. Hvert element i
+produktmatrisen $NM$ regnes modulo $p$, der $p$ er alfabetstørrelsen (for
+det norske alfabetet $p=29$). Til slutt gjøres tallene om tilbake til bokstaver,
+og man får den krypterte meldingen.
+
+%=====================================================================
+\section{Oppgave}
+Vårt ord på $4$ bokstaver er \texttt{SMIL}. Ordets vektor er
+$
+\mathbf{v}= (18,\ 12,\ 8,\ 11).
+$
+
+Vi bruker modulo $29$ med matrisen
+$
+A=
+\begin{bmatrix}
+2 & 4 & 0 & 8 \\
+0 & 3 & 2 & 5 \\
+0 & 0 & 9 & 8 \\
+0 & 0 & 6 & 3
+\end{bmatrix}.
+$
+
+Produktet $A\mathbf{v}$ beregnes rad for rad:
+
+$
+\begin{aligned}
+\text{Av}_{1}&=2\cdot18+4\cdot12+0\cdot8+8\cdot11
+               =172\pmod{29}=27,\\[4pt]
+\text{Av}_{2}&=0\cdot18+3\cdot12+2\cdot8+5\cdot11
+               =107\pmod{29}=20,\\[4pt]
+\text{Av}_{3}&=0\cdot18+0\cdot12+9\cdot8+8\cdot11
+               =160\pmod{29}=15,\\[4pt]
+\text{Av}_{4}&=0\cdot18+0\cdot12+6\cdot8+3\cdot11
+               =177\pmod{29}=3.
+\end{aligned}
+$
+
+Dermed får vi vektoren
+$
+A\mathbf{v}= \begin{bmatrix}27\\20\\15\\3\end{bmatrix},
+$
+som kan skrives om til strengen \texttt{ØUPD}.
+
+%=====================================================================
+\subsection{4b) Inversibilitet}
+Nøkkel‑matrisen må være inverterbar for å kunne dekryptere meldingen.
+Uten en inversmatrise er det ingen måte å gå tilbake fra chiffer til
+klartekst.  
+
+Det norske alfabetet har $29$ bokstaver; når man regner modulo $29$ har hver
+bokstav et tilsvarende siffer. Alle meldinger på norsk kan krypteres ved å
+bruke modulo $29$, forutsatt at matrisen $A$ er inverterbar.
+
+Matrisen $A$ er inverterbar dersom
+$
+\det(A)\not\equiv 0 \pmod{29}.
+$
+Hvis $\det(A)\equiv0\ (\text{mod }29)$ finnes ingen invers, og kryptering med
+den matrisen kan ikke dekrypteres \cite{minini2026}.
+
+\[ A \text{ er inverterbar dersom }\det(A)\neq 0 \] \[ A= \begin{pmatrix} 2 & 4 & 0 & 8\\ 0 & 3 & 2 & 5\\ 0 & 0 & 9 & 8\\ 0 & 0 & 6 & 3 \end{pmatrix} \] \[ M_{11}= \begin{vmatrix} 3 & 2 & 5\\ 0 & 9 & 8\\ 0 & 6 & 3 \end{vmatrix} \qquad M_{21}= \begin{vmatrix} 4 & 0 & 8\\ 0 & 9 & 8\\ 0 & 6 & 3 \end{vmatrix} \] \[ M_{31}= \begin{vmatrix} 4 & 0 & 8\\ 3 & 2 & 5\\ 0 & 6 & 3 \end{vmatrix} \qquad M_{41}= \begin{vmatrix} 4 & 0 & 8\\ 3 & 2 & 5\\ 0 & 9 & 8 \end{vmatrix} \] \[ \det(A) = 2\cdot M_{11} + 0\cdot M_{21} + 0\cdot M_{31} + 0\cdot M_{41} \] \[ = 2\cdot \left( 3\cdot(27-48) - 2\cdot(0) + 5\cdot(0) \right) \] \[ = 2\cdot(-21\cdot3) = 2\cdot(-63) = -126 \] \[ -126 \equiv -10 \pmod{29} \] \[ -10 \neq 0 \quad\Rightarrow\quad \text{inverterbar mod }29 \]
+
+%=====================================================================
+\subsection{4c) Kontroll av invers}
+For å sjekke om matrisen er invers, kan man:
+
+\begin{enumerate}
+\item Rad‑redusere den sammen med identitetsmatrisen.
+\item Multiplikere $A$ med en foreslått invers $A^{-1}$ og se om resultatet er
+      identitetsmatrisen (modulo $29$).
+\end{enumerate}
+
+I oppgaven ble følgende rad‑reduksjon utført (forkortet for lesbarhet):
+
+$
+\begin{bmatrix}
+2&4&0&8&\;1&0&0&0\\
+0&3&2&5&\;0&1&0&0\\
+0&0&9&8&\;0&0&1&0\\
+0&0&6&3&\;0&0&0&1
+\end{bmatrix}
+\;\longrightarrow\;
+\begin{bmatrix}
+2&4&0&8&\;1&0&0&0\\
+0&3&2&5&\;0&1&0&0\\
+0&0&1&\tfrac{8}{9}&\;0&0&\tfrac{1}{9}&0\\
+0&0&0&1&\;0&0&\tfrac{2}{7}&-\tfrac{3}{7}
+\end{bmatrix}.
+$
+
+Den nederste raden viser pivotelementet $1$ og koeffisientene
+$\frac{2}{7}$ og $-\frac{3}{7}$, som i modulo $29$ tilsvarer $21$ og $12$.
+Siden dette ikke stemmer med de faktiske elementene i $A^{-1}$, er
+$A^{-1}$ **ikke** inversen av $A$.
+
+En direkte kontroll ved multiplikasjon gir:
+
+$
+AA^{-1}=
+\begin{bmatrix}
+15&9&1&10\\
+0&10&1&0\\
+0&0&4&28\\
+0&0&21&12
+\end{bmatrix}
+\begin{bmatrix}
+2&4&0&8\\
+0&3&2&5\\
+0&0&9&8\\
+0&0&6&3
+\end{bmatrix}
+=
+\begin{bmatrix}
+30&147&\dots\\
+\vdots & \vdots & \ddots
+\end{bmatrix}
+\pmod{29}
+=
+\begin{bmatrix}
+1&2&\dots\\
+\vdots&\vdots&\ddots
+\end{bmatrix},
+$
+hvor elementet $(1,2)$ er $2$ i stedet for $0$, så produktet er **ikke**
+identitetsmatrisen. Dermed er den foreslåtte matrisen ikke den korrekte
+inversen.
+
+\subsubsection*{Dekryptering}
+For å dekryptere en kryptert melding trenger man:
+\begin{enumerate}
+\item Den krypterte meldingen (omgjort til tall‑matrise).
+\item Inversen av nøkkelmatrisen $A^{-1}$ (modulo $29$).
+\end{enumerate}
+Man ganger $A^{-1}$ med den krypterte meldingsmatrisen, tar resultatet
+modulo $29$ og oversetter tallene tilbake til bokstaver.  
+
+Den korrekte inversen av $A$ (modulo $29$) finnes ved å bruke en algoritme for
+modulær matrix‑invers, men den er **ikke** den som er oppgitt i oppgaven
+over.
+
+%=====================================================================
+\section*{Bibliografi}
+\begin{thebibliography}{9}
+\bibitem{minini2026}
+Minini, A. (2026, 16.~september). \emph{Modular Inverse of a Matrix}. Hentet fra
+Andrea Minini: \url{https://www.andreaminini.net/math/modular-inverse-of-a-matrix}.
+
+\bibitem{wikipedia}
+Hill cipher. \emph{Wikipedia}. \url{https://en.wikipedia.org/wiki/Hill_cipher}.
+
+\bibitem{geeksforgeeks}
+Hill Cipher – Matrix Multiplicative Inverse Example.
+\url{https://www.geeksforgeeks.org/dsa/hill-cipher/}.
+
+\bibitem{cybrary}
+Hill Cipher – 3×3 Matrix Multiplicative Inverse.
+\url{https://www.cybrary.it/blog/learn-hill-cipher-3x3-matrix-multiplicative-inverse-example}.
+\end{thebibliography}
+
+\end{document}
