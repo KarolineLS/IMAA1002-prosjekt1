@@ -15,7 +15,6 @@
 \usepackage{geometry}
 \geometry{margin=2.5cm}
 
-
 %-------------------------- Dokumentinformasjon -----------------------
 \title{Prosjekt 1: Hill-siffer}
 \author{ Maria Brizida Inacio Dos Santos Carvalho, Stian Frøland \\ Kristina Løvbrekke, Linnea Nordstrand, Karoline Låge Sivertsen }
@@ -158,7 +157,7 @@ For å sjekke om matrisen er invers, kan man:
       identitetsmatrisen (modulo $29$).
 \end{enumerate}
 
-I oppgaven ble følgende rad‑reduksjon utført (forkortet for lesbarhet):
+I oppgaven ble følgende rad‑reduksjon utført (forkortet for lesbarhet):\\
 
 $
 \begin{bmatrix}
@@ -175,14 +174,16 @@ $
 0&0&0&1&\;0&0&\tfrac{2}{7}&-\tfrac{3}{7}
 \end{bmatrix}.
 $
-
+\\
+\\
+\\
 Den nederste raden viser pivotelementet $1$ og koeffisientene
 $\frac{2}{7}$ og $-\frac{3}{7}$, som i modulo $29$ tilsvarer $21$ og $12$.
 Siden dette ikke stemmer med de faktiske elementene i $A^{-1}$, er
 $A^{-1}$ **ikke** inversen av $A$.
 
-En direkte kontroll ved multiplikasjon gir:
-
+En direkte kontroll ved multiplikasjon gir:\\
+\\
 $
 AA^{-1}=
 \begin{bmatrix}
@@ -208,7 +209,9 @@ AA^{-1}=
 1&2&\dots\\
 \vdots&\vdots&\ddots
 \end{bmatrix},
-$
+$\\
+\\
+\\
 hvor elementet $(1,2)$ er $2$ i stedet for $0$, så produktet er **ikke**
 identitetsmatrisen. Dermed er den foreslåtte matrisen ikke den korrekte
 inversen.
