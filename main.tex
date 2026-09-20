@@ -29,6 +29,10 @@
 \tableofcontents
 \newpage
 
+
+
+\subsection*{Kilde til formler} Alle formler og metoder innen lineær algebra som er benyttet i denne oppgaven, er hentet fra \textit{Differential Equations \& Linear Algebra}, 4. utgave, av C. Henry Edwards, David E. Penney og David T. Calvis, utgitt av Pearson. Det er hovedsakelig benyttet teori fra kapittel 3, \textit{Linear Systems and Matrices}.
+
 %=====================================================================
 \section{Innledning}
 Kryptering er en metode for å omgjøre data, i disse eksemplene ren tekst,
@@ -225,6 +229,165 @@ modulo $29$ og oversetter tallene tilbake til bokstaver.
 Den korrekte inversen av $A$ (modulo $29$) finnes ved å bruke en algoritme for
 modulær matrix‑invers, men den er **ikke** den som er oppgitt i oppgaven
 over.
+
+
+\[
+\left[
+\begin{array}{cccc|cccc}
+2 & 4 & 0 & 8 & 1 & 0 & 0 & 0 \\
+0 & 3 & 2 & 5 & 0 & 1 & 0 & 0 \\
+0 & 0 & 9 & 8 & 0 & 0 & 1 & 0 \\
+0 & 0 & 6 & 3 & 0 & 0 & 0 & 1
+\end{array}
+\right]
+\]
+
+
+
+\[ \begin{aligned} \text{(1)}\quad & R_1 : 2, \\ & R_2 : 3, \\ & R_3 : 9, \\ & R_4 : 3 \end{aligned} \]
+
+
+\[
+\left[
+\begin{array}{cccc|cccc}
+1 & 2 & 0 & 4 & \tfrac12 & 0 & 0 & 0 \\
+0 & 1 & \tfrac{2}{3} & \tfrac{5}{3} & 0 & \tfrac13 & 0 & 0 \\
+0 & 0 & 1 & \tfrac{8}{9} & 0 & 0 & \tfrac19 & 0 \\
+0 & 0 & 2 & 1 & 0 & 0 & 0 & \tfrac13
+\end{array}
+\right]
+\]
+
+\[ \text{(2)}\quad R_4 \leftarrow R_4 - 2R_3 \]
+
+\[
+\left[
+\begin{array}{cccc|cccc}
+1 & 2 & 0 & 4 & \tfrac12 & 0 & 0 & 0 \\
+0 & 1 & \tfrac{2}{3} & \tfrac{5}{3} & 0 & \tfrac13 & 0 & 0 \\
+0 & 0 & 1 & \tfrac{8}{9} & 0 & 0 & \tfrac19 & 0 \\
+0 & 0 & 0 & -\tfrac{7}{9} & 0 & 0 & -\tfrac{2}{9} & \tfrac13
+\end{array}
+\right]
+\]
+
+
+\[ \text{(3)}\quad R_4 \cdot \left(-\frac{9}{7}\right) \]
+
+
+
+\[
+\left[
+\begin{array}{cccc|cccc}
+1 & 2 & 0 & 4 & \tfrac12 & 0 & 0 & 0 \\
+0 & 1 & \tfrac{2}{3} & \tfrac{5}{3} & 0 & \tfrac13 & 0 & 0 \\
+0 & 0 & 1 & \tfrac{8}{9} & 0 & 0 & \tfrac19 & 0 \\
+0 & 0 & 0 & 1 & 0 & 0 & \tfrac{2}{7} & -\tfrac{3}{7}
+\end{array}
+\right]
+\]
+
+
+
+\[ \text{(4)}\quad R_3 \leftarrow R_3 - \frac{8}{9}R_4 \]
+
+
+
+\[
+\left[
+\begin{array}{cccc|cccc}
+1 & 2 & 0 & 4 & \tfrac12 & 0 & 0 & 0 \\
+0 & 1 & \tfrac{2}{3} & \tfrac{5}{3} & 0 & \tfrac13 & 0 & 0 \\
+0 & 0 & 1 & 0 & 0 & 0 & -\tfrac{1}{7} & \tfrac{8}{21} \\
+0 & 0 & 0 & 1 & 0 & 0 & \tfrac{2}{7} & -\tfrac{3}{7}
+\end{array}
+\right]
+\]
+
+
+
+\[ \text{(5)}\quad R_2 \leftarrow R_2 - \frac{2}{3}R_3 \]
+
+
+
+\[
+\left[
+\begin{array}{cccc|cccc}
+1 & 2 & 0 & 4 & \tfrac12 & 0 & 0 & 0 \\
+0 & 1 & 0 & \tfrac{5}{3} & 0 & \tfrac13 & \tfrac{2}{21} & -\tfrac{16}{63} \\
+0 & 0 & 1 & 0 & 0 & 0 & -\tfrac{1}{7} & \tfrac{8}{21} \\
+0 & 0 & 0 & 1 & 0 & 0 & \tfrac{2}{7} & -\tfrac{3}{7}
+\end{array}
+\right]
+\]
+
+
+
+\[ \text{(6)}\quad R_2 \leftarrow R_2 - \frac{5}{3}R_4 \]
+
+
+
+\[
+\left[
+\begin{array}{cccc|cccc}
+1 & 2 & 0 & 4 & \tfrac12 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 & 0 & \tfrac13 & -\tfrac{8}{21} & \tfrac{29}{63} \\
+0 & 0 & 1 & 0 & 0 & 0 & -\tfrac{1}{7} & \tfrac{8}{21} \\
+0 & 0 & 0 & 1 & 0 & 0 & \tfrac{2}{7} & -\tfrac{3}{7}
+\end{array}
+\right]
+\]
+
+
+\[ \text{(7)}\quad R_1 \leftarrow R_1 - 2R_2, \qquad R_1 \leftarrow R_1 - 4R_4 \]
+
+
+
+\[
+\left[
+\begin{array}{cccc|cccc}
+1 & 0 & 0 & 0 & \tfrac12 & -\tfrac{2}{3} & -\tfrac{8}{21} & \tfrac{50}{63} \\
+0 & 1 & 0 & 0 & 0 & \tfrac13 & -\tfrac{8}{21} & \tfrac{29}{63} \\
+0 & 0 & 1 & 0 & 0 & 0 & -\tfrac{1}{7} & \tfrac{8}{21} \\
+0 & 0 & 0 & 1 & 0 & 0 & \tfrac{2}{7} & -\tfrac{3}{7}
+\end{array}
+\right]
+\]
+
+\vspace{1.5cm}
+
+Dette er den inverse til A, nå for å løse oppgaven trenger vi bare å ta modulo 29 av inversen og å gange inversen med den krypterte meldingen for å få den orginale meldingen vår:
+
+\vspace{1cm}
+
+Den krypterte meldingen er \[ \text{ØUPX} \] Som tall blir dette \[ \text{ØUPX} = 27,\ 20,\ 15,\ 23 \] Den krypterte meldingen kan dermed skrives som matrisen \[ v = \begin{pmatrix} 27 \\ 20 \\ 15 \\ 23 \end{pmatrix} \]  Når vi tar modulo 29 av den inverse matrisen, får vi:
+\[ A^{-1} \equiv \begin{pmatrix} 15 & 9 & 1 & 10 \\ 0 & 10 & 1 & 0 \\ 0 & 0 & 4 & 28 \\ 0 & 0 & 21 & 12 \end{pmatrix}  \
+
+
+Vi ganger den inverse matrisen med den krypterte meldingen:
+
+\[ A^{-1}v = \begin{pmatrix} 15 & 9 & 1 & 10 \\ 0 & 10 & 1 & 0 \\ 0 & 0 & 4 & 28 \\ 0 & 0 & 21 & 12 \end{pmatrix} \begin{pmatrix} 27 \\ 20 \\ 15 \\ 23 \end{pmatrix} \pmod{29} \]
+Vi beregner rad for rad: 
+
+\[ A^{-1}v_1 = 15\cdot27 + 9\cdot20 + 1\cdot15 + 10\cdot23 = 830 \equiv 18 \pmod{29} \]
+
+\[ A^{-1}v_2 = 0\cdot27 + 10\cdot20 + 1\cdot15 + 0\cdot23 = 215 \equiv 12 \pmod{29} \]
+
+\[ A^{-1}v_3 = 0\cdot27 + 0\cdot20 + 4\cdot15 + 28\cdot23 = 704 \equiv 8 \pmod{29} \]
+
+\[ A^{-1}v_4 = 0\cdot27 + 0\cdot20 + 21\cdot15 + 12\cdot23 = 591 \equiv 11 \pmod{29} \]
+
+Dermed får vi vektoren
+
+\[ A^{-1}v = \begin{pmatrix} 18 \\ 12 \\ 8 \\ 11 \end{pmatrix} \pmod{29} \]
+
+Tallene tilsvarer bokstavene
+
+\[ 18 = S,\qquad 12 = M,\qquad 8 = I,\qquad 11 = L \]
+
+Dermed er den dekrypterte meldingen
+
+\[ \boxed{\text{SMIL}} \]
 
 %=====================================================================
 \section*{Bibliografi}
