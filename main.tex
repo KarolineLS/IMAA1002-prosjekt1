@@ -6,15 +6,20 @@
 %-------------------------- Pakker ------------------------------------
 \usepackage[utf8]{inputenc}          % tegnkoding
 \usepackage[T1]{fontenc}             % korrekt tegnbehandling
-\usepackage[norsk]{babel}            % språk
+\usepackage[norsk]{babel} 
+\usepackage{lmodern}% språk
 \usepackage{amsmath,amssymb,amsthm}  % matematiske omgivelser
 \usepackage{graphicx}                % figurer (ikke brukt her)
 \usepackage{float}                   % presis plassering av figurer/tabeller
 \usepackage{booktabs}                % pene tabeller
 \usepackage{hyperref}                % lenker
 \usepackage{geometry}
-\geometry{margin=2.5cm}
+\usepackage{setspace}
+\usepackage{titling}
 
+\geometry{margin=2.5cm}
+\onehalfspacing
+\setlength{\droptitle}{3cm}
 
 %-------------------------- Dokumentinformasjon -----------------------
 \title{Prosjekt 1: Hill-siffer}
@@ -25,12 +30,13 @@ Linnea Nordstrand og Karoline Låge Sivertsen }
 \setlength{\parindent}{0pt}
 
 
-%=====================================================================
-\begin{document}
-\maketitle
-\tableofcontents
-\newpage
 
+%=====================================================================
+\renewcommand{\thesubsection}{\arabic{section}\alph{subsection})} 
+\begin{document} 
+\maketitle 
+\tableofcontents 
+\newpage
 
 
 \subsection*{Kilde til formler} Alle formler og metoder innen lineær algebra som er benyttet i denne oppgaven, er hentet fra \textit{Differential Equations \& Linear Algebra}, 4. utgave, av C. Henry Edwards, David E. Penney og David T. Calvis, utgitt av Pearson. Det er hovedsakelig benyttet teori fra kapittel 3, \textit{Linear Systems and Matrices}.
@@ -48,13 +54,9 @@ på avveie.
 %=====================================================================
 \section{Alfabet og tall}
 Man kan omgjøre det norske alfabetet til sifre $0$–$28$ der
-$
-A=0,\; B=1,\; C=2,\;\dots ,\; Å=28 .
-$
+\[ A=0,\; B=1,\; C=2,\;\dots,\; \text{Å}=28. \]
 Vi tar for oss vektoren
-$
-\mathbf{H} = (H,\;E,\;I,\;V,\;E,\;R,\;D,\;E,\;N).
-$
+\[ \mathbf{H}=(H,\;E,\;I,\;V,\;E,\;R,\;D,\;E,\;N). \]
 
 Siden hver av bokstavene har et tilsvarende siffer kan vi omgjøre vektoren
 med bokstaver til en vektor med tall:
@@ -82,62 +84,52 @@ $
 85 = 2\cdot 29 + 27 \quad\Longrightarrow\quad 85\ (\text{mod }29)=27 .
 $
 
+\newpage
 %=====================================================================
 \section{Hill‑kryptering}
-\subsection{4a) Generell fremgangsmåte}
-\\
-Måten å kryptere en streng på via Hill‑siffer er å først velge en nøkkel
+\subsection{ Generell fremgangsmåte}
+
+\vspace{2mm}
+
+Måten å kryptere en streng på via Hill‑siffer er ved å først velge en nøkkel
 $N$. Nøkkelen er en matrise, for eksempel en $(3\times3)$‑matrise.
 Deretter trenger du meldingen $M$, som du vil kryptere. Meldingen blir delt opp
-i blokker som passer nøkkelmatrisen slik at den kan ganges med den.
-\\
-\\
-Bokstavene i matrisen gjøres om til tall ($A=0$, $B=1$, osv.). Deretter
-ganges nøkkelmatrisen $N$ med meldingsmatrisen $M$. Hvert element i
-produktmatrisen $NM$ regnes modulo $p$, der $p$ er alfabetstørrelsen (for
-det norske alfabetet $p=29$). Til slutt gjøres tallene om tilbake til bokstaver,
-og man får den krypterte meldingen.
+i blokker i en matrise, slik at nøkkelmatrisen og matrisen kan gnages med hverandre.
 
+
+Bokstavene i matrisen gjøres om til tall ($A=0$, $B=1$, osv. ), der tallene blir avgjort basert på alfabetstørrelsen  $p$ (for eksempel det norske alfabetet $p=29$). Deretter ganges nøkkelmatrisen $N$ med meldingsmatrisen $M$. Hvert element i produktmatrisen $NM$ regnes modulo $p$,. Til slutt omgjøres tallene tilbake til bokstaver, og man får da den krypterte meldingen.
+
+\vspace{6mm}
 %=====================================================================
-Vårt ord på $4$ bokstaver er \texttt{SMIL}. Ordets vektor er
-$
-\mathbf{v}= (18,\ 12,\ 8,\ 11).
-$
+Vårt ord på $4$ bokstaver er \texttt{SMIL}. Ordets vektor blir da:
 
-Vi bruker modulo $29$ med matrisen
-$
-A=
-\begin{bmatrix}
-2 & 4 & 0 & 8 \\
-0 & 3 & 2 & 5 \\
-0 & 0 & 9 & 8 \\
-0 & 0 & 6 & 3
-\end{bmatrix}.
-$
+
+\[ v = \begin{bmatrix} 18\\ 12\\ 8\\ 11 \end{bmatrix} \]
+
+\vspace{6mm}
+Matrien er en (4*1) matrise, da er det like mange rader i $v$ som kolonner i $A$. Dermed kan vi gange disse to matrisene ilag.
+
+\vspace{6mm}
+
+ Vi tar deretter matriseprodukt av $A$ som er nøkkelmatrisen og $v$ som er meldingen vår. Tilslutt tar vi mod 29 av hvert element i matrisen $Av$:
+
+\vspace{6mm}
+ 
+\[ A= \begin{bmatrix} 2 & 4 & 0 & 8 \\ 0 & 3 & 2 & 5 \\ 0 & 0 & 9 & 8 \\ 0 & 0 & 6 & 3 \end{bmatrix} \]
 
 \vspace{7.5mm} %5mm vertical space
 
 Produktet $A\mathbf{v}$ beregnes rad for rad:
 \\
 
-$
-\begin{aligned}
-\text{Av}_{1}&=2\cdot18+4\cdot12+0\cdot8+8\cdot11
-               =172\pmod{29}=27,\\[4pt]
-\text{Av}_{2}&=0\cdot18+3\cdot12+2\cdot8+5\cdot11
-               =107\pmod{29}=20,\\[4pt]
-\text{Av}_{3}&=0\cdot18+0\cdot12+9\cdot8+8\cdot11
-               =160\pmod{29}=15,\\[4pt]
-\text{Av}_{4}&=0\cdot18+0\cdot12+6\cdot8+3\cdot11
-               =81\pmod{29}=23.
-\end{aligned}
-$ 
+\[ \begin{aligned} \text{Av}_{1}&=2\cdot18+4\cdot12+0\cdot8+8\cdot11 =172 \equiv 27 \pmod{29},\\[4pt] \text{Av}_{2}&=0\cdot18+3\cdot12+2\cdot8+5\cdot11 =107 \equiv 20 \pmod{29},\\[4pt] \text{Av}_{3}&=0\cdot18+0\cdot12+9\cdot8+8\cdot11 =160 \equiv 15 \pmod{29},\\[4pt] \text{Av}_{4}&=0\cdot18+0\cdot12+6\cdot8+3\cdot11 =81 \equiv 23 \pmod{29}. \end{aligned} \]
 
-\vspace{7.5mm} Dermed får vi vektoren \[ A\mathbf{v}= \begin{bmatrix} 27\\ 20\\ 15\\ 23 \end{bmatrix} \] 
+\vspace{7.5mm} Dermed får vi vektoren \[ A\mathbf{v}= \begin{bmatrix} 27\\ 20\\ 15\\ 23 \end{bmatrix} \]  \\
 \vspace{7.5mm}
-som kan skrives om til strengen \texttt{ØUPX}. \vspace{7.5mm}
+som kan skrives om til strengen \texttt{ØUPX}, som er vår krypterte melding.
+\vspace{7.5mm}
 %=====================================================================
-\subsection{4b) Inversibilitet}
+\subsection{ Inversibilitet}
 Nøkkel‑matrisen må være inverterbar for å kunne dekryptere meldingen.
 Uten en inversmatrise er det ingen måte å gå tilbake fra chiffer til
 klartekst.  
@@ -145,7 +137,7 @@ klartekst.
 Det norske alfabetet har $29$ bokstaver; når man regner modulo $29$ har hver
 bokstav et tilsvarende siffer. Alle meldinger på norsk kan krypteres ved å
 bruke modulo $29$, forutsatt at matrisen $A$ er inverterbar.
-\vspace{7.5mm}
+\vspace{6mm}
 
 Matrisen $A$ er inverterbar dersom
 $
@@ -154,36 +146,47 @@ $
 Hvis $\det(A)\equiv0\ (\text{mod }29)$ finnes ingen invers, og kryptering med
 den matrisen kan ikke dekrypteres \cite{minini2026}.
 
-\[ A \text{ er inverterbar dersom }\det(A)\neq 0 \] \vspace{2mm}
-\[ A= \begin{pmatrix} 2 & 4 & 0 & 8\\ 0 & 3 & 2 & 5\\ 0 & 0 & 9 & 8\\ 0 & 0 & 6 & 3 \end{pmatrix} \] \vspace{3mm}
-\[ M_{11}= \begin{vmatrix} 3 & 2 & 5\\ 0 & 9 & 8\\ 0 & 6 & 3 \end{vmatrix} \qquad M_{21}= \begin{vmatrix} 4 & 0 & 8\\ 0 & 9 & 8\\ 0 & 6 & 3 \end{vmatrix} \] \[ M_{31}= \begin{vmatrix} 4 & 0 & 8\\ 3 & 2 & 5\\ 0 & 6 & 3 \end{vmatrix} \qquad M_{41}= \begin{vmatrix} 4 & 0 & 8\\ 3 & 2 & 5\\ 0 & 9 & 8 \end{vmatrix} \] \vspace{2mm}
+\[ A \text{ er inverterbar dersom }\det(A)\neq 0 \] 
+
+\vspace{2mm}
+
+\[ A= \begin{bmatrix} 2 & 4 & 0 & 8 \\ 0 & 3 & 2 & 5 \\ 0 & 0 & 9 & 8 \\ 0 & 0 & 6 & 3 \end{bmatrix}. \]
+
+\[ M_{11}= \begin{vmatrix} 3 & 2 & 5\\ 0 & 9 & 8\\ 0 & 6 & 3 \end{vmatrix} \qquad M_{21}= \begin{vmatrix} 4 & 0 & 8\\ 0 & 9 & 8\\ 0 & 6 & 3 \end{vmatrix} \]
+\[ M_{31}= \begin{vmatrix} 4 & 0 & 8\\ 3 & 2 & 5\\ 0 & 6 & 3 \end{vmatrix} \qquad M_{41}= \begin{vmatrix} 4 & 0 & 8\\ 3 & 2 & 5\\ 0 & 9 & 8 \end{vmatrix} \] 
+
+\vspace{2mm}
+
 \[ \det(A) = 2\cdot M_{11} + 0\cdot M_{21} + 0\cdot M_{31} + 0\cdot M_{41} \] \[ = 2\cdot \left( 3\cdot(27-48) - 2\cdot(0) + 5\cdot(0) \right) \] \[ = 2\cdot(-21\cdot3) = 2\cdot(-63) = -126 \] \[ -126 \equiv -10 \pmod{29} \] \vspace{2mm}
 \[ -10 \neq 0 \quad\Rightarrow\quad \text{inverterbar mod }29 \]
 
 %=====================================================================
-\subsection{4c) Kontroll av invers}
+\subsection{ Kontroll av invers}
 
 \vspace{2mm}
 
-Invers matrisen er gitt som:
+Invers matrisen i oppgaven er gitt som $A^{-1}$=
 $
-\begin{pmatrix}
-15 & 9  & 1  & 10\\[4pt]
-0  & 10 & 1  & 0 \\[4pt]
-0  & 0  & 4  & 28\\[4pt]
-0  & 0  & 21 & 12
-\end{pmatrix}
-$
+\begin{bmatrix} 15 & 9 & 1 & 10\\[4pt] 0 & 10 & 1 & 0 \\[4pt] 0 & 0 & 4 & 28\\[4pt] 0 & 0 & 21 & 12 \end{bmatrix} $
 
-\vspace{5mm} For å sjekke om matrisen er invers, kan man: \begin{enumerate} \item Rad‑redusere den sammen med identitetsmatrisen. \item Multiplisere $A$ med en foreslått invers $A^{-1}$ og se om resultatet er identitetsmatrisen (modulo $29$). \end{enumerate} Hvis vi begynner med å radredusere opp imot indetitets matrisen, fra nedeste rad for vi dette: 
+\vspace{5mm} For å sjekke om matrisen er invers, kan man sjekke det på 2 ulike måter: \begin{enumerate} \item Rad‑redusere den sammen med identitetsmatrisen, for å få den foreslåtte matrisen  $A^{-1}$. \item Multiplisere $A$ med en foreslått invers $A^{-1}$ og se om resultatet er identitetsmatrisen (modulo $29$). \end{enumerate} Hvis vi begynner med å radredusere opp imot indetitets matrisen, fra nedeste rad for vi dette: 
 \vspace{2mm}
 
-\[ \begin{bmatrix} 2&4&0&8&\;1&0&0&0\\ 0&3&2&5&\;0&1&0&0\\ 0&0&9&8&\;0&0&1&0\\ 0&0&6&3&\;0&0&0&1 \end{bmatrix} \;\longrightarrow\; \begin{bmatrix} 2&4&0&8&\;1&0&0&0\\ 0&3&2&5&\;0&1&0&0\\ 0&0&1&\tfrac{8}{9}&\;0&0&\tfrac{1}{9}&0\\ 0&0&0&1&\;0&0&\tfrac{2}{7}&-\tfrac{3}{7} \end{bmatrix}. \]
+\[ \begin{aligned} & \begin{bmatrix} 2&4&0&8&\;1&0&0&0\\ 0&3&2&5&\;0&1&0&0\\ 0&0&9&8&\;0&0&1&0\\ 0&0&6&3&\;0&0&0&1 \end{bmatrix} \\[6pt] & R_3 : 9,\qquad R_4 : 3 \\[6pt] &\Downarrow \\[6pt] & \begin{bmatrix} 2&4&0&8&\;1&0&0&0\\ 0&3&2&5&\;0&1&0&0\\ 0&0&1&\tfrac89&\;0&0&\tfrac19&0\\ 0&0&2&1&\;0&0&0&\tfrac13 \end{bmatrix} \\[6pt] & R_4 \leftarrow R_4-2R_3 \\[6pt] &\Downarrow \\[6pt] & \begin{bmatrix} 2&4&0&8&\;1&0&0&0\\ 0&3&2&5&\;0&1&0&0\\ 0&0&1&\tfrac89&\;0&0&\tfrac19&0\\ 0&0&0&-\tfrac79&\;0&0&-\tfrac29&\tfrac13 \end{bmatrix} \\[6pt] & R_4 : \left(-\tfrac79\right) \\[6pt] &\Downarrow \\[6pt] & \begin{bmatrix} 2&4&0&8&\;1&0&0&0\\ 0&3&2&5&\;0&1&0&0\\ 0&0&1&\tfrac89&\;0&0&\tfrac19&0\\ 0&0&0&1&\;0&0&\tfrac27&-\tfrac37 \end{bmatrix} \end{aligned} \]
 
-\vspace{4mm}Her kan man se at pivotelementet $1$ på nederste rad, som betyr at denne raden ikke kan reduseres mer. På samme rad til høyre ser man koeffisientene $\frac{2}{7}$ og $-\frac{3}{7}$, som i modulo $29$ tilsvarer $21$ og $12$. Siden dette ikke stemmer med de faktiske elementene $A^{-1}_{4,3}$ og $A^{-1}_{4,4}$ som vist i $A^{-1}$ i oppgaven, dermed er $A^{-1}$ \textbf{ikke} inversen av $A$.
-\newline En direkte kontroll ved multiplikasjon gir:
 \vspace{4mm}
-\[ AA^{-1}= \begin{bmatrix} 15&9&1&10\\ 0&10&1&0\\ 0&0&4&28\\ 0&0&21&12 \end{bmatrix} \begin{bmatrix} 2&4&0&8\\ 0&3&2&5\\ 0&0&9&8\\ 0&0&6&3 \end{bmatrix} = \begin{bmatrix} 30&147&\dots\\ \vdots & \vdots & \ddots \end{bmatrix} \pmod{29} = \begin{bmatrix} 1&2&\dots\\ \vdots&\vdots&\ddots \end{bmatrix}, \] hvor elementet $(1,2)$ er $2$ i stedet for $0$, så produktet er \textbf{ikke} identitetsmatrisen. Dermed er den foreslåtte matrisen ikke den korrekte inversen.
+
+Her kan man se at pivotelementet $1$ på nederste rad, som betyr at denne raden ikke kan reduseres mer. På samme rad til høyre ser man koeffisientene $\frac{2}{7}$ og $-\frac{3}{7}$, som i modulo $29$ tilsvarer $21$ og $12$. Siden dette ikke stemmer med de faktiske elementene $A^{-1}_{43}$ og $A^{-1}_{44}$ som vist i $A^{-1}$ i oppgaven, dermed er $A^{-1}$ \textbf{ikke} inversen av $A$.
+
+\vspace{2mm}
+
+En direkte kontroll ved multiplikasjon gir:
+
+\vspace{2mm}
+
+\[ AA^{-1}= \begin{bmatrix} 15&9&1&10\\ 0&10&1&0\\ 0&0&4&28\\ 0&0&21&12 \end{bmatrix} \begin{bmatrix} 2&4&0&8\\ 0&3&2&5\\ 0&0&9&8\\ 0&0&6&3 \end{bmatrix} = \begin{bmatrix} 30&147&\dots\\ \vdots & \vdots & \ddots \end{bmatrix} \pmod{29} = \begin{bmatrix} 1&2&\dots\\ \vdots&\vdots&\ddots \end{bmatrix} \] 
+\\
+Som man kan se over, i elementet $A^{-1}_{12}$ er det $2$ i stedet for $0$, så produktet kommer \textbf{ikke} til å bli identitetsmatrisen. Dermed er den foreslåtte matrisen ikke den korrekte inversen.
 
 \subsubsection*{Dekryptering}
 For å dekryptere en kryptert melding trenger man:
@@ -191,12 +194,9 @@ For å dekryptere en kryptert melding trenger man:
 \item Den krypterte meldingen (omgjort til tall‑matrise).
 \item Inversen av nøkkelmatrisen $A^{-1}$ (modulo $29$).
 \end{enumerate}
-Man ganger $A^{-1}$ med den krypterte meldingsmatrisen, tar resultatet
-modulo $29$ og oversetter tallene tilbake til bokstaver.  
+For å dekryptere hvilken som helst matrise tar man produktet av inversen til nøkkelmatrisen $N$ med den krypterte meldingsmatrisen $M$.  Deretter med din nye matrise, tar du modulo $p$ av matrisen (viktig at gjennom helle prossesen bruker du samme $p$) og gjør tallene om til bokstaver.
 
-Den korrekte inversen av $A$ (modulo $29$) finnes ved å bruke en algoritme for
-modulær matrix‑invers, men den er **ikke** den som er oppgitt i oppgaven
-over.
+Den korrekte inversen av $A$ (modulo $29$) finnes ved å fortsette å radredusere oppimot indentitetsmatrisen $I$,  inversen av $A$ er ikke den samme matrisen som ble oppgitt tidligere.
 
 
 \[
@@ -324,38 +324,11 @@ over.
 
 \vspace{1.5cm}
 
-Dette er den inverse til A, nå for å løse oppgaven trenger vi bare å ta modulo 29 av inversen og å gange inversen med den krypterte meldingen for å få den orginale meldingen vår:
+Dette er den inverse til A, nå for å løse oppgaven trenger vi å regne ut produktet av inversen og den krypterte meldingen vår, og til slutt ta modulo 29(Mod 29) av hvert element vi for av produktet :
 
 \vspace{1cm}
 
-Den krypterte meldingen er \[ \text{ØUPX} \] Som tall blir dette \[ \text{ØUPX} = 27,\ 20,\ 15,\ 23 \] Den krypterte meldingen kan dermed skrives som matrisen \[ v = \begin{pmatrix} 27 \\ 20 \\ 15 \\ 23 \end{pmatrix} \]  Når vi tar modulo 29 av den inverse matrisen, får vi:
-\[ A^{-1} \equiv \begin{pmatrix} 15 & 9 & 1 & 10 \\ 0 & 10 & 1 & 0 \\ 0 & 0 & 4 & 28 \\ 0 & 0 & 21 & 12 \end{pmatrix}  \
-
-
-Vi ganger den inverse matrisen med den krypterte meldingen:
-
-\[ A^{-1}v = \begin{pmatrix} 15 & 9 & 1 & 10 \\ 0 & 10 & 1 & 0 \\ 0 & 0 & 4 & 28 \\ 0 & 0 & 21 & 12 \end{pmatrix} \begin{pmatrix} 27 \\ 20 \\ 15 \\ 23 \end{pmatrix} \pmod{29} \]
-Vi beregner rad for rad: 
-
-\[ A^{-1}v_1 = 15\cdot27 + 9\cdot20 + 1\cdot15 + 10\cdot23 = 830 \equiv 18 \pmod{29} \]
-
-\[ A^{-1}v_2 = 0\cdot27 + 10\cdot20 + 1\cdot15 + 0\cdot23 = 215 \equiv 12 \pmod{29} \]
-
-\[ A^{-1}v_3 = 0\cdot27 + 0\cdot20 + 4\cdot15 + 28\cdot23 = 704 \equiv 8 \pmod{29} \]
-
-\[ A^{-1}v_4 = 0\cdot27 + 0\cdot20 + 21\cdot15 + 12\cdot23 = 591 \equiv 11 \pmod{29} \]
-
-Dermed får vi vektoren
-
-\[ A^{-1}v = \begin{pmatrix} 18 \\ 12 \\ 8 \\ 11 \end{pmatrix} \pmod{29} \]
-
-Tallene tilsvarer bokstavene
-
-\[ 18 = S,\qquad 12 = M,\qquad 8 = I,\qquad 11 = L \]
-
-Dermed er den dekrypterte meldingen
-
-\[ \boxed{\text{SMIL}} \]
+Den krypterte meldingen er \[ \text{ØUPX} \] Som tall blir dette \[ \text{ØUPX} = 27,\ 20,\ 15,\ 23 \] Den krypterte meldingen kan dermed skrives som matrisen \[ v = \begin{bmatrix} 27 \\ 20 \\ 15 \\ 23 \end{bmatrix} \] Når vi tar modulo 29 av den inverse matrisen, får vi: \[ A^{-1} \equiv \begin{bmatrix} 15 & 9 & 1 & 10 \\ 0 & 10 & 1 & 0 \\ 0 & 0 & 4 & 28 \\ 0 & 0 & 21 & 12 \end{bmatrix} \pmod{29} \] Vi ganger den inverse matrisen med den krypterte meldingen: \[ A^{-1}v = \begin{bmatrix} 15 & 9 & 1 & 10 \\ 0 & 10 & 1 & 0 \\ 0 & 0 & 4 & 28 \\ 0 & 0 & 21 & 12 \end{bmatrix} \begin{bmatrix} 27 \\ 20 \\ 15 \\ 23 \end{bmatrix} \pmod{29} \] Vi beregner rad for rad: \[ A^{-1}v_1 = 15\cdot27 + 9\cdot20 + 1\cdot15 + 10\cdot23 = 830 \equiv 18 \pmod{29} \] \[ A^{-1}v_2 = 0\cdot27 + 10\cdot20 + 1\cdot15 + 0\cdot23 = 215 \equiv 12 \pmod{29} \] \[ A^{-1}v_3 = 0\cdot27 + 0\cdot20 + 4\cdot15 + 28\cdot23 = 704 \equiv 8 \pmod{29} \] \[ A^{-1}v_4 = 0\cdot27 + 0\cdot20 + 21\cdot15 + 12\cdot23 = 591 \equiv 11 \pmod{29} \] Dermed får vi vektoren \[ A^{-1}v = \begin{bmatrix} 18 \\ 12 \\ 8 \\ 11 \end{bmatrix} \pmod{29} \] Tallene tilsvarer bokstavene \[ 18 = S,\qquad 12 = M,\qquad 8 = I,\qquad 11 = L \] Dermed er den dekrypterte meldingen \[ \boxed{\text{SMIL}} \]
 
 %=====================================================================
 \section*{Bibliografi}
@@ -377,3 +350,4 @@ Hill Cipher – 3×3 Matrix Multiplicative Inverse.
 \end{thebibliography}
 
 \end{document}
+
